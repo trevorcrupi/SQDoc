@@ -36,7 +36,7 @@ program
       throw new Error();
     }
 
-    console.log(tree.output);
+    console.log(tree.tree);
   });
 
 program.parse(process.argv)
