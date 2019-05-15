@@ -28,15 +28,21 @@ test('returns correct filetree', () => {
 test('returns correct documentation tree', () => {
   const filepath = path.join(__dirname, 'TestFolders');
   const correctTree = [
-    { level: 1, type: 'directory', name: 'TestFolders' },
-    { level: 2, type: 'directory', name: 'FirstFolder' },
-    { level: 3, type: 'file', name: 'FirstFolder.md' },
-    { level: 2, type: 'file', name: 'root.md' },
-    { level: 2, type: 'directory', name: 'SecondFolder' },
-    { level: 3, type: 'file', name: 'SecondFolder.md' }
+    { level: 1, type: 'directory', name: 'TestFolders', fullpath: '' },
+    { level: 2, type: 'directory', name: 'FirstFolder', fullpath: 'FirstFolder' },
+    { level: 3, type: 'file', name: 'FirstFolder.md', fullpath:'FirstFolder\\FirstFolder.md' },
+    { level: 2, type: 'file', name: 'root.md', fullpath: 'root.md' },
+    { level: 2, type: 'directory', name: 'SecondFolder', fullpath: 'SecondFolder' },
+    { level: 3, type: 'file', name: 'SecondFolder.md', fullpath: 'SecondFolder\\SecondFolder.md' }
   ];
 
-  expect(controller.tree(filepath).tree).toStrictEqual(correctTree);
+  expect(controller.tree(filepath).structure.getTree()).toStrictEqual(correctTree);
+});
+
+test('returns correct documentation tree node by name', () => {
+  const filepath = path.join(__dirname, 'TestFolders');
+  const correct = { level: 2, type: 'directory', name: 'SecondFolder', fullpath: 'SecondFolder' };
+  expect(controller.tree(filepath).structure.getTreeNodeByName('SecondFolder')).toStrictEqual(correct);
 });
 
 test('returns correct filetree output', () => {
@@ -47,4 +53,34 @@ test('returns correct filetree output', () => {
 
   const correctString = `TestFolders\n |─FirstFolder\n |──${ffolder}\n |─${root}\n |─SecondFolder\n |──${sfolder}\n`
   expect(controller.tree(filepath).output).toBe(correctString);
+});
+
+test('throws error when given no filename', () => {
+  const filepath = path.join(__dirname, 'TestFolders');
+  expect(() => {
+    controller.tree(filepath).structure.getFileByName()
+  }).toThrow();
+});
+
+test('throws error when given no directory name', () => {
+  const filepath = path.join(__dirname, 'TestFolders');
+  expect(() => {
+    controller.tree(filepath).structure.getTreeNodeByName()
+  }).toThrow();
+});
+
+test('correctly returns array of all files', () => {
+  const filepath = path.join(__dirname, 'TestFolders');
+  const correctArray = [
+    { level: 3, type: 'file', name: 'FirstFolder.md', fullpath:'FirstFolder\\FirstFolder.md' },
+    { level: 2, type: 'file', name: 'root.md', fullpath: 'root.md' },
+    { level: 3, type: 'file', name: 'SecondFolder.md', fullpath: 'SecondFolder\\SecondFolder.md' }
+  ];
+  expect(controller.tree(filepath).structure.getFiles()).toStrictEqual(correctArray);
+})
+
+test('returns correct file by name', () => {
+  const filepath = path.join(__dirname, 'TestFolders');
+  const correct = { level: 3, type: 'file', name: 'SecondFolder.md', fullpath: 'SecondFolder\\SecondFolder.md' };
+  expect(controller.tree(filepath).structure.getFileByName('SecondFolder.md')).toStrictEqual(correct);
 });
