@@ -13,7 +13,7 @@ test('exists returns false when given nothing', () => {
 });
 
 test('exists returns true when given good path', () => {
-  const existTestFilePath = path.join('TestFolder', 'test.md');
+  const existTestFilePath = path.join('TestFolder', 'test2.md');
   const testPath = path.join(__dirname, existTestFilePath);
   expect(system.FileReader.exists(testPath)).toBe(true);
 });
@@ -45,7 +45,7 @@ test('getFileContents throws an error when getting contents from folder', () => 
 });
 
 test('getFileContents returns correct contents given good path', () => {
-  const existTestFilePath = path.join('TestFolder', 'test.md');
+  const existTestFilePath = path.join('TestFolder', 'test2.md');
   const testPath = path.join(__dirname, existTestFilePath);
   expect(system.FileReader.getFileContents(testPath)).toBe('# test');
 });
@@ -62,13 +62,12 @@ test('retrieveFullCachePath returns false when given bad file', () => {
 });
 
 test('retrieveFullCachePath gives correct full path to cache file', () => {
-  const cacheFile = path.join('Test', 'test.md.html');
+  const cacheFile = path.join('Test', 'test2.md.html');
   const systemCache = path.join('system', 'cache');
   const rootLib = path.join(process.cwd(), 'lib');
   const fullPath = path.join(rootLib, path.join(systemCache, cacheFile));
   expect(system.FileReader.retrieveFullCachePath(cacheFile)).toBe(fullPath);
 });
-
 
 test('retrieveFullCachePath returns false when file doesn\'t exist', () => {
   const cacheFile = path.join('Test', 'test1.md.html');

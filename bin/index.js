@@ -28,14 +28,14 @@ program
     @description Runs init function at anytime (can override lock file!)
     @command: 'init'
     @params: N/A
-  **/
+
   program
     .command('init')
     .description('Generates doc.lock file')
     .action(() => {
       init();
     });
-
+**/
 
 /**
   @description Lists the documentation tree (so folders and markdown) in nice format

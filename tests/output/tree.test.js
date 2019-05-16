@@ -30,10 +30,12 @@ test('returns correct documentation tree', () => {
   const correctTree = [
     { level: 1, type: 'directory', name: 'TestFolders', fullpath: '' },
     { level: 2, type: 'directory', name: 'FirstFolder', fullpath: 'FirstFolder' },
+    { level: 3, type: 'directory', name: 'GHI', fullpath: path.join('FirstFolder', 'GHI') },
+    { level: 4, type: 'file', name: 'GHI.md', fullpath: path.join('FirstFolder', path.join('GHI', 'GHI.md')) },
     { level: 3, type: 'file', name: 'FirstFolder.md', fullpath: path.join('FirstFolder', 'FirstFolder.md') },
-    { level: 2, type: 'file', name: 'root.md', fullpath: 'root.md' },
     { level: 2, type: 'directory', name: 'SecondFolder', fullpath: 'SecondFolder' },
-    { level: 3, type: 'file', name: 'SecondFolder.md', fullpath: path.join('SecondFolder', 'SecondFolder.md') }
+    { level: 3, type: 'file', name: 'SecondFolder.md', fullpath: path.join('SecondFolder', 'SecondFolder.md') },
+    { level: 2, type: 'file', name: 'root.md', fullpath: 'root.md' }
   ];
 
   expect(controller.tree(filepath).structure.getTree()).toStrictEqual(correctTree);
