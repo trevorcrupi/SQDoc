@@ -49,18 +49,15 @@ program
   .action(() => {
     if(system.FileReader.exists(config.LOCK_PATH)) {
       const tree = controller.tree(config.ROOT_PATH);
-      console.log('Command: %s', tree.introduction);
+      console.log();
+      console.log('%s', tree.introduction);
       console.log('---------------');
-
-      if(!system.FileReader.exists(config.LOCK_PATH)) {
-        init();
-      }
 
       if(!tree.complete) {
         console.error('%s', tree.error || 'Something went wrong!');
         throw new Error();
       }
-
+      
       console.log(tree.output);
     } else {
       console.log(colors.red('No doc.lock file yet.'), colors.green('sqdoc'));
