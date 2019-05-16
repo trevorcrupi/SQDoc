@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const fs = require('fs');
 const program  = require('commander');
 const colors   = require('colors');
 const init     = require('./init');
@@ -12,20 +13,6 @@ const controller = require('../lib/output').controller;
 const Server = require('../lib/server').Server;
 
 /**
-  @description Opening questions for basic info
-  @command: 'greet'
-  @params: N/A
-**/
-program
-  .command('init')
-  .description('Gets basic project information')
-  .action(() => {
-    if(!system.FileReader.exists(config.LOCK_PATH)) {
-      init();
-    }
-  });
-
-/**
   @description Simple greet program for testing and fun
   @command: 'greet'
   @params: N/A
@@ -34,9 +21,6 @@ program
   .command('greet')
   .description('Gives a nice greeting')
   .action(() => {
-    if(!system.FileReader.exists(config.LOCK_PATH)) {
-      init();
-    }
     console.log('%s', colors.red(controller.greet()));
   });
 
@@ -50,7 +34,7 @@ program
   .alias('t')
   .description('Show documentation tree')
   .action(() => {
-    if(!system.FileReader.exists(config.LOCK_PATH)) {
+    if(system.FileReader.exists(config.LOCK_PATH)) {
       const tree = controller.tree(config.ROOT_PATH);
       console.log('Command: %s', tree.introduction);
       console.log('---------------');
@@ -66,7 +50,7 @@ program
 
       console.log(tree.output);
     } else {
-      init();
+      console.log(colors.red('No doc.lock file yet.'), colors.green('sqdoc'));
     }
   });
 
@@ -82,7 +66,7 @@ program
   .option('-p, --port [value]', 'Port', "3001")
   .option('-b, --build', 'Build Static Files', "")
   .action((args) => {
-    if(!system.FileReader.exists(config.LOCK_PATH)) {
+    if(system.FileReader.exists(config.LOCK_PATH)) {
       const tree = controller.tree(config.ROOT_PATH);
 
       try {
@@ -94,8 +78,12 @@ program
         throw new Error(err);
       }
     } else {
-      init();
+      console.log(colors.red('No doc.lock file yet.'), colors.green('sqdoc'));
     }
   });
 
 program.parse(process.argv)
+
+if(!system.FileReader.exists(config.LOCK_PATH)) {
+  init();
+}

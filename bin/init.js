@@ -19,8 +19,7 @@ module.exports = (rootPath) => {
       try {
         system.FileWriter.create(
           config.LOCK_PATH,
-          JSON.stringify(answers),
-          '.lock'
+          JSON.stringify(answers)
         );
         console.log('Successfully generated .lock file.');
       } catch(err) {
