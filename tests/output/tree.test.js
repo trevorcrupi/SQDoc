@@ -30,10 +30,10 @@ test('returns correct documentation tree', () => {
   const correctTree = [
     { level: 1, type: 'directory', name: 'TestFolders', fullpath: '' },
     { level: 2, type: 'directory', name: 'FirstFolder', fullpath: 'FirstFolder' },
-    { level: 3, type: 'file', name: 'FirstFolder.md', fullpath:'FirstFolder\\FirstFolder.md' },
+    { level: 3, type: 'file', name: 'FirstFolder.md', fullpath: path.join('FirstFolder', 'FirstFolder.md') },
     { level: 2, type: 'file', name: 'root.md', fullpath: 'root.md' },
     { level: 2, type: 'directory', name: 'SecondFolder', fullpath: 'SecondFolder' },
-    { level: 3, type: 'file', name: 'SecondFolder.md', fullpath: 'SecondFolder\\SecondFolder.md' }
+    { level: 3, type: 'file', name: 'SecondFolder.md', fullpath: path.join('SecondFolder', 'SecondFolder.md') }
   ];
 
   expect(controller.tree(filepath).structure.getTree()).toStrictEqual(correctTree);
@@ -72,15 +72,15 @@ test('throws error when given no directory name', () => {
 test('correctly returns array of all files', () => {
   const filepath = path.join(__dirname, 'TestFolders');
   const correctArray = [
-    { level: 3, type: 'file', name: 'FirstFolder.md', fullpath:'FirstFolder\\FirstFolder.md' },
+    { level: 3, type: 'file', name: 'FirstFolder.md', fullpath:path.join('FirstFolder', 'FirstFolder.md') },
     { level: 2, type: 'file', name: 'root.md', fullpath: 'root.md' },
-    { level: 3, type: 'file', name: 'SecondFolder.md', fullpath: 'SecondFolder\\SecondFolder.md' }
+    { level: 3, type: 'file', name: 'SecondFolder.md', fullpath: path.join('SecondFolder', 'SecondFolder.md') }
   ];
   expect(controller.tree(filepath).structure.getFiles()).toStrictEqual(correctArray);
 })
 
 test('returns correct file by name', () => {
   const filepath = path.join(__dirname, 'TestFolders');
-  const correct = { level: 3, type: 'file', name: 'SecondFolder.md', fullpath: 'SecondFolder\\SecondFolder.md' };
+  const correct = { level: 3, type: 'file', name: 'SecondFolder.md', fullpath: path.join('SecondFolder', 'SecondFolder.md') };
   expect(controller.tree(filepath).structure.getFileByName('SecondFolder.md')).toStrictEqual(correct);
 });

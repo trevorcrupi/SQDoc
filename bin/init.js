@@ -3,7 +3,7 @@ const system   = require('../lib/system');
 const colors   = require('colors');
 const config   = require('../config');
 
-module.exports = (rootPath) => {
+module.exports = () => {
   const questions = [
     { type: 'input', name: 'projectName', message: colors.green('Choose a Project Name') },
     { type: 'input', name: 'description', message: colors.green('A description of the project')},
@@ -17,7 +17,7 @@ module.exports = (rootPath) => {
       }
 
       answers.projectNameTrim = answers.projectName.replace(/\s/g, "").trim();
-      system.FileWriter.mkdir(system.FileReader.join(config.ROOT_PATH, 'lib/system/cache/' + answers.projectNameTrim));
+      system.FileWriter.setupCache(system.FileReader.join('cache', answers.projectNameTrim));
 
       try {
         system.FileWriter.create(
