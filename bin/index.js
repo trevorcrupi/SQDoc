@@ -1,13 +1,29 @@
 #!/usr/bin/env node
-const path    = require('path');
-const program = require('commander');
-const colors  = require('colors');
+const program  = require('commander');
+const colors   = require('colors');
+const init     = require('./init');
+const config   = require('../config');
+const system   = require('../lib/system');
 
 // Import controllers
 const controller = require('../lib/output').controller;
 
 // Get the f*kin app server!
 const Server = require('../lib/server').Server;
+
+/**
+  @description Opening questions for basic info
+  @command: 'greet'
+  @params: N/A
+**/
+program
+  .command('init')
+  .description('Gets basic project information')
+  .action(() => {
+    if(!system.FileReader.exists(config.LOCK_PATH)) {
+      init();
+    }
+  });
 
 /**
   @description Simple greet program for testing and fun
@@ -18,6 +34,9 @@ program
   .command('greet')
   .description('Gives a nice greeting')
   .action(() => {
+    if(!system.FileReader.exists(config.LOCK_PATH)) {
+      init();
+    }
     console.log('%s', colors.red(controller.greet()));
   });
 
@@ -31,16 +50,24 @@ program
   .alias('t')
   .description('Show documentation tree')
   .action(() => {
-    const tree = controller.tree(process.cwd());
-    console.log('Command: %s', tree.introduction);
-    console.log('---------------');
+    if(!system.FileReader.exists(config.LOCK_PATH)) {
+      const tree = controller.tree(config.ROOT_PATH);
+      console.log('Command: %s', tree.introduction);
+      console.log('---------------');
 
-    if(!tree.complete) {
-      console.error('%s', tree.error || 'Something went wrong!');
-      throw new Error();
+      if(!system.FileReader.exists(config.LOCK_PATH)) {
+        init();
+      }
+
+      if(!tree.complete) {
+        console.error('%s', tree.error || 'Something went wrong!');
+        throw new Error();
+      }
+
+      console.log(tree.output);
+    } else {
+      init();
     }
-
-    console.log(tree.output);
   });
 
 /**
@@ -55,16 +82,19 @@ program
   .option('-p, --port [value]', 'Port', "3001")
   .option('-b, --build', 'Build Static Files', "")
   .action((args) => {
-    const ref = process.cwd();
-    const tree = controller.tree(ref);
+    if(!system.FileReader.exists(config.LOCK_PATH)) {
+      const tree = controller.tree(config.ROOT_PATH);
 
-    try {
-      const server = new Server(tree.structure, ref);
-      server.register(args.build)
-            .serve(args.port);
-      console.log('Documentation server is up and running on port %s', colors.green(args.port));
-    } catch(err) {
-      throw new Error(err);
+      try {
+        const server = new Server(tree.structure);
+        server.register(args.build)
+              .serve(args.port);
+        console.log('Documentation server is up and running on port %s', colors.green(args.port));
+      } catch(err) {
+        throw new Error(err);
+      }
+    } else {
+      init();
     }
   });
 
