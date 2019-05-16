@@ -68,9 +68,11 @@ program
   .action((args) => {
     if(system.FileReader.exists(config.LOCK_PATH)) {
       const tree = controller.tree(config.ROOT_PATH);
+      // Get contents of lock file
+      const globals = JSON.parse(system.FileReader.getFileContents(config.LOCK_PATH));
 
       try {
-        const server = new Server(tree.structure);
+        const server = new Server(tree.structure, globals);
         server.register(args.build)
               .serve(args.port);
         console.log('Documentation server is up and running on port %s', colors.green(args.port));
@@ -82,7 +84,7 @@ program
     }
   });
 
-program.parse(process.argv)
+program.parse(process.argv);
 
 if(!system.FileReader.exists(config.LOCK_PATH)) {
   init();

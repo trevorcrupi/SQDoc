@@ -13,8 +13,11 @@ module.exports = (rootPath) => {
     .prompt(questions)
     .then((answers) => {
       if(!answers.projectName) {
-        answers.projectName = 'The Darwinizer';
+        answers.projectName = 'Darwinizer';
       }
+
+      answers.projectNameTrim = answers.projectName.replace(/\s/g, "").trim();
+      system.FileWriter.mkdir(system.FileReader.join(config.ROOT_PATH, 'lib/system/cache/' + answers.projectNameTrim));
 
       try {
         system.FileWriter.create(
