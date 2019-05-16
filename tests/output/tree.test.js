@@ -80,3 +80,23 @@ test('returns correct file by name', () => {
   const correct = { level: 2, parent: 'SecondFolder', type: 'file', name: 'SecondFolder.md', fullpath: path.join('SecondFolder', 'SecondFolder.md') };
   expect(controller.tree(filepath).structure.getFileByName('SecondFolder.md')).toStrictEqual(correct);
 });
+
+test('returns correct depth', () => {
+  const filepath = path.join(__dirname, 'TestFolders');
+  expect(controller.tree(filepath).structure.depth()).toBe(3);
+});
+
+test('returns correct subset', () => {
+  const filepath = path.join(__dirname, 'TestFolders');
+  expect(controller.tree(filepath).structure.subset({ level: 3, parent: 'GHI' })).toStrictEqual([{ level: 3, parent:'GHI', type: 'file', name: 'GHI.md', fullpath: path.join(path.join('FirstFolder', 'GHI'), 'GHI.md') }]);
+});
+
+test('returns empty set when nothing matches', () => {
+  const filepath = path.join(__dirname, 'TestFolders');
+  expect(controller.tree(filepath).structure.subset({ level: 3, parent: 'GHU' })).toStrictEqual([]);
+});
+
+test('returns empty set when given invalid filter', () => {
+  const filepath = path.join(__dirname, 'TestFolders');
+  expect(controller.tree(filepath).structure.subset({ level: 3, parents: 'GHU' })).toStrictEqual([]);
+});
