@@ -67,7 +67,7 @@ test('throws error when given no directory name', () => {
 test('correctly returns array of all files', () => {
   const filepath = path.join(__dirname, 'TestFolders');
   const correctArray = [
-    { level: 3, parent:'GHI', type: 'file', name: 'GHI.md', fullpath: path.join(path.join('FirstFolder', 'GHI'), 'GHI.md') },
+    { level: 3, parent:'GHI', type: 'file', name: 'GHI.md', fullpath: path.join('FirstFolder', 'GHI', 'GHI.md') },
     { level: 2, parent:'FirstFolder', type: 'file', name: 'FirstFolder.md', fullpath:path.join('FirstFolder', 'FirstFolder.md') },
     { level: 2, parent:'SecondFolder', type: 'file', name: 'SecondFolder.md', fullpath: path.join('SecondFolder', 'SecondFolder.md') },
     { level: 1, parent:'TestFolders', type: 'file', name: 'root.md', fullpath: 'root.md' }
@@ -88,7 +88,7 @@ test('returns correct depth', () => {
 
 test('returns correct subset', () => {
   const filepath = path.join(__dirname, 'TestFolders');
-  expect(controller.tree(filepath).structure.subset({ level: 3, parent: 'GHI' })).toStrictEqual([{ level: 3, parent:'GHI', type: 'file', name: 'GHI.md', fullpath: path.join(path.join('FirstFolder', 'GHI'), 'GHI.md') }]);
+  expect(controller.tree(filepath).structure.subset({ level: 3, parent: 'GHI' })).toStrictEqual([{ level: 3, parent:'GHI', type: 'file', name: 'GHI.md', fullpath: path.join('FirstFolder', 'GHI', 'GHI.md') }]);
 });
 
 test('returns empty set when nothing matches', () => {
