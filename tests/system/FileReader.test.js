@@ -3,7 +3,7 @@ const path = require('path');
 const fs   = require('fs');
 
 test('exists returns false when given bad path', () => {
-  const testPath = path.join(__dirname, 'TestFolder', 'test3.md');
+  const testPath = path.join(__dirname, 'TestFolder', 'test7.md');
   expect(system.FileReader.exists(testPath)).toBe(false);
 });
 
@@ -28,7 +28,7 @@ test('getFileContents throws an error when no path given', () => {
 });
 
 test('getFileContents throws an error when getting contents from non-existent file', () => {
-  const testPath = path.join(__dirname, 'TestFolder', 'test3.md');
+  const testPath = path.join(__dirname, 'TestFolder', 'test7.md');
   expect(() => {
     system.FileReader.getFileContents(testPath)
   }).toThrow();
@@ -44,6 +44,30 @@ test('getFileContents throws an error when getting contents from folder', () => 
 test('getFileContents returns correct contents given good path', () => {
   const testPath = path.join(__dirname, 'TestFolder', 'test2.md');
   expect(system.FileReader.getFileContents(testPath)).toBe('# test');
+});
+
+test('getDirectoryContents throws an error when getting contents from non-existent directory', () => {
+  const testPath = path.join(__dirname, 'TestFolder', 'test3');
+  expect(() => {
+    system.FileReader.getDirectoryContents(testPath)
+  }).toThrow();
+});
+
+test('getDirectoryContents throws an error when getting contents from file', () => {
+  const testPath = path.join(__dirname, 'TestFolder', 'test2.md');
+  expect(() => {
+    system.FileReader.getDirectoryContents(testPath)
+  }).toThrow();
+});
+
+test('getDirectoryContents returns correct contents given good path, 2 files', () => {
+  const testPath = path.join(__dirname, 'TestFolder');
+  expect(system.FileReader.getDirectoryContents(testPath)).toEqual(['test2.md', 'test3.md']);
+});
+
+test('getDirectoryContents returns correct contents given good path, multiple files', () => {
+  const testPath = path.join(process.cwd(), 'lib', 'system');
+  expect(system.FileReader.getDirectoryContents(testPath)).toEqual(['cache', 'Cache.js', 'FileReader.js', 'FileWriter.js', 'index.js']);
 });
 
 test('Join returns the same as path.join for two strings', () => {
