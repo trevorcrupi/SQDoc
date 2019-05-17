@@ -9,6 +9,7 @@ module.exports = () => {
     { type: 'input', name: 'description', message: colors.green('A description of the project')},
     { type: 'input', name: 'companyName', message: colors.green('Company Name') },
   ];
+  
   inquirer
     .prompt(questions)
     .then((answers) => {
@@ -17,16 +18,21 @@ module.exports = () => {
       }
 
       answers.projectNameTrim = answers.projectName.replace(/\s/g, "").trim();
-      system.FileWriter.setupCache(system.FileReader.join('cache', answers.projectNameTrim));
-
+      
       try {
-        system.FileWriter.create(
-          config.LOCK_PATH,
-          JSON.stringify(answers)
-        );
-        console.log('Successfully generated .lock file.');
+        system.Cache(answers.projectNameTrim).setup();
+
+        const payload = {
+          path: config.LOCK_PATH,
+          contents: JSON.stringify(answers)
+        }
+
+        if(!system.FileWriter.create(payload))
+            throw new Error(file.err);
+
+        console.log(colors.cyan('Successfully generated .lock file.'));
       } catch(err) {
-        console.error(err);
+        console.error(colors.red(err));
       }
     });
 }

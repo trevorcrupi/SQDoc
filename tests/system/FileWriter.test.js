@@ -7,6 +7,11 @@ test('create does not create file when given path that exists', () => {
   expect(system.FileWriter.create({ path: testPath, contents: 'some file contents' }).created).toBe(false);
 });
 
+test('create does not create file when given non-empty object without path property', () => {
+  const testPath = path.join(__dirname, 'TestFolder', 'test2.md');
+  expect(system.FileWriter.create({ paths: testPath, contents: 'some file contents' }).created).toBe(false);
+});
+
 test('creates file in given directory', () => {
   const testPath = path.join(__dirname, 'TestFolder', 'test1.md');
   expect(system.FileWriter.create({ path: testPath, contents: 'some file contents' })).toEqual({ created: true, path: testPath, contents: 'some file contents' });
@@ -35,6 +40,16 @@ test('remove correctly removes file', () => {
 test('remove returns false when given bad file', () => {
   const testPath = path.join(__dirname, 'TestFolder', 'test7.md');
   expect(system.FileWriter.remove({ path: testPath }).removed).toBe(false);
+});
+
+test('remove returns false if given empty object', () => {
+  const testPath = path.join(__dirname, 'TestFolder', 'test1.md');
+  expect(system.FileWriter.remove().created).toBe(false);
+});
+
+test('remove returns false if given object with no path', () => {
+  const testPath = path.join(__dirname, 'TestFolder', 'test1.md');
+  expect(system.FileWriter.remove({ test: 'stuff' }).created).toBe(false);
 });
 
 test('creates a directory at the given path', () => {

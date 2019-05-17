@@ -47,7 +47,7 @@ test('returns correct filetree output', () => {
   const ghi = colors.green('GHI.md');
 
   const correctString = `TestFolders\n|─FirstFolder\n|──GHI\n|───${ghi}\n|──${ffolder}\n|─SecondFolder\n|──${sfolder}\n|─${root}\n`
-  expect(controller.tree(filepath).output).toBe(correctString);
+  expect(controller.tree(filepath).structure.toString()).toBe(correctString);
 });
 
 test('throws error when given no filename', () => {

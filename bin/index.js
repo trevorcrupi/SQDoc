@@ -28,14 +28,20 @@ program
     @description Runs init function at anytime (can override lock file!)
     @command: 'init'
     @params: N/A
-
+  **/
   program
     .command('init')
     .description('Generates doc.lock file')
     .action(() => {
-      init();
+      if(system.FileReader.exists(config.LOCK_PATH)) {
+        try {
+          system.Cache(config.GLOBALS.projectNameTrim).delete();
+          const removed = system.FileWriter.remove({ path: config.LOCK_PATH });  
+        } catch(err) {
+          console.log(colors.red(err));
+        }
+      }
     });
-**/
 
 /**
   @description Lists the documentation tree (so folders and markdown) in nice format
@@ -49,7 +55,6 @@ program
   .action(() => {
     if(system.FileReader.exists(config.LOCK_PATH)) {
       const tree = controller.tree(config.ROOT_PATH);
-      console.log();
       console.log('%s', tree.introduction);
       console.log('---------------');
 
@@ -58,9 +63,9 @@ program
         throw new Error();
       }
       
-      console.log(tree.output);
+      console.log(tree.structure.toString());
     } else {
-      console.log(colors.red('No doc.lock file yet.'), colors.green('sqdoc'));
+      console.log(colors.red('No doc.lock file yet.'));
     }
   });
 
@@ -78,11 +83,8 @@ program
   .action((args) => {
     if(system.FileReader.exists(config.LOCK_PATH)) {
       const tree = controller.tree(config.ROOT_PATH);
-      // Get contents of lock file
-      const globals = JSON.parse(system.FileReader.getFileContents(config.LOCK_PATH));
-
       try {
-        const server = new Server(tree.structure, globals);
+        const server = new Server(tree.structure);
         server.register(args.build)
               .serve(args.port);
         console.log('Documentation server is up and running on port %s', colors.green(args.port));
@@ -90,7 +92,7 @@ program
         throw new Error(err);
       }
     } else {
-      console.log(colors.red('No doc.lock file yet.'), colors.green('sqdoc'));
+      console.log(colors.red('No doc.lock file yet.'));
     }
   });
 
