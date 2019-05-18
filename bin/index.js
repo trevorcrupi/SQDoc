@@ -36,7 +36,7 @@ program
       if(system.FileReader.exists(config.LOCK_PATH)) {
         try {
           system.Cache(config.GLOBALS.projectNameTrim).delete();
-          const removed = system.FileWriter.remove({ path: config.LOCK_PATH });  
+          const removed = system.FileWriter.remove({ path: config.LOCK_PATH });
         } catch(err) {
           console.log(colors.red(err));
         }
@@ -62,7 +62,7 @@ program
         console.error('%s', tree.error || 'Something went wrong!');
         throw new Error();
       }
-      
+
       console.log(tree.structure.toString());
     } else {
       console.log(colors.red('No doc.lock file yet.'));
@@ -85,7 +85,7 @@ program
       const tree = controller.tree(config.ROOT_PATH);
       try {
         const server = new Server(tree.structure);
-        server.register(args.build)
+        server.build(true, args.build)
               .serve(args.port);
         console.log('Documentation server is up and running on port %s', colors.green(args.port));
       } catch(err) {
