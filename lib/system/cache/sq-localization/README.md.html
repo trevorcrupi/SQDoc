@@ -1,0 +1,91 @@
+<h1 id="sq-localization">SQ localization</h1>
+<p>This is extremely simple client-side localization for React. Focused on non-intrusive integration in your app.</p>
+<p>I was tasked with adding localization to an app midway through the application cycle, and I found that most of the packages out there are very intrusive when trying integration. So, I created the simplest localization component I could think of.</p>
+<h2 id="getting-started">Getting Started</h2>
+<h3 id="installing">Installing</h3>
+<p><code>npm i sq-localization --save</code></p>
+<h3 id="setting-up">Setting up</h3>
+<p>By design, this package is incredibly easy to set up and use.</p>
+<p>Before your .render in your index file, call the init function and point to your language object:</p>
+<pre><code class="language-js">import { Register } from &#39;sq-localization&#39;;
+
+Register.init({
+  &#39;en&#39;: {
+    &#39;greeting&#39;: {
+      &#39;formal&#39;: &#39;Hello, World!&#39;,
+      &#39;informal&#39;: &#39;What up!&#39;
+    }
+  },
+  &#39;fr&#39;: {
+    &#39;greeting&#39;: {
+      &#39;formal&#39;: &#39;Bonjour!&#39;,
+      &#39;informal&#39;: &#39;Salut!&#39;
+    }
+  }
+})</code></pre>
+<p>This is used by the <Text /> component to decide what to dynamically render. This is all that&#39;s needed to get up and running with simple localization. I recommend separating the language objects into separate .js files and importing them for better separation and readability.  </p>
+<p>To start using localization, just use the <Text /> component as follows:</p>
+<pre><code class="language-js">import { Text } from &#39;sq-localization&#39;;
+
+class TestComponent extends React.Component {
+  render() {
+    return (
+      &lt;Text lang=&#39;en&#39; text=&#39;greeting.formal&#39; /&gt;
+    );
+  }
+}</code></pre>
+<p>This would output &quot;Hello, World!&quot;. In order to switch languages, just change the &#39;lang&#39; prop to one of your defined language strings in the init function. For example:</p>
+<pre><code class="language-js">import { Text } from &#39;sq-localization&#39;;
+
+class TestComponent extends React.Component {
+  render() {
+    return (
+      &lt;Text lang=&#39;fr&#39; text=&#39;greeting.formal&#39; /&gt;
+    );
+  }
+}</code></pre>
+<p>Would output &#39;Bonjour!&#39;.</p>
+<p>An error will be thrown if the language or the text is not found.</p>
+<h3 id="templating">Templating</h3>
+<p>This localization component now supports templating! Use templating in your language tree as follows:</p>
+<pre><code class="language-js">&#39;en&#39;: {
+  &#39;greeting&#39;: {
+    &#39;formal&#39;: &#39;Hello &lt;%name%&gt;!&#39;,
+    &#39;informal&#39;: &#39;What up &lt;%name%?&gt;! Ya boi is &lt;%age%&gt; years old.&#39;
+  }
+},
+&#39;fr&#39;: {
+  &#39;greeting&#39;: {
+    &#39;formal&#39;: &#39;Bonjour &lt;%name%&gt;!&#39;,
+    &#39;informal&#39;: &#39;Salut &lt;%name%&gt;! J\&#39;ai &lt;%age%&gt; ans! Yeet!&#39;
+  }
+}</code></pre>
+<p>In order to pass in values, you guessed it, you pass in props into your component!</p>
+<pre><code class="language-js">import { Text } from &#39;sq-localization&#39;;
+
+
+// other sh*t
+&lt;Text lang=&#39;en&#39; text=&#39;greeting.informal&#39; name=&#39;Charles Darwin&#39; age=&#39;209&#39; /&gt;</code></pre>
+<p>This will output &quot;What up Charles Darwin! Ya boi is 209 years old.&quot;</p>
+<p>Note, if you put a template into your language tree and you DON&#39;T include that in the component (i.e., you don&#39;t supply the &#39;Charles Darwin&#39; or the &#39;209&#39;) then the component will throw an error and you are an idiot!</p>
+<h3 id="markdown">Markdown</h3>
+<p>This localization component now supports markdown! Use markdown in your language tree as follows:</p>
+<pre><code class="language-js">&#39;en&#39;: {
+  &#39;greeting&#39;: {
+    &#39;formal&#39;: &#39;Hello **&lt;%name%&gt;**!&#39;,
+    &#39;informal&#39;: &#39;What up *&lt;%name%?&gt;*! Ya boi is &lt;%age%&gt; years old.&#39;,
+    &#39;link&#39;: &#39;[Check me out! I\&#39;m a link!](https://stratospherequality.com/)&#39;
+  }
+},
+&#39;fr&#39;: {
+  &#39;greeting&#39;: {
+    &#39;formal&#39;: &#39;Bonjour &lt;%name%&gt;!&#39;,
+    &#39;informal&#39;: &#39;Salut &lt;%name%&gt;! J\&#39;ai &lt;%age%&gt; ans! Yeet!&#39;,
+    &#39;link&#39;: &#39;[Je veux être un link!](https://stratospherequality.com/)&#39;
+  }
+}</code></pre>
+<p>Then use your component as originally designed and your things will now be markdowned! Go nut</p>
+<h3 id="redux">Redux</h3>
+<p>Again, designed to be as simple as possible. Just keep the value for the language in your state and pass it down the tree to the text component. The text component will re-render on a state change.</p>
+<h2 id="license">License</h2>
+<p>This project is licensed under the MIT License - see the <a href="LICENSE.md">LICENSE.md</a> file for details.</p>

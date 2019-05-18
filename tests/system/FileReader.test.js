@@ -67,7 +67,7 @@ test('getDirectoryContents returns correct contents given good path, 2 files', (
 
 test('getDirectoryContents returns correct contents given good path, multiple files', () => {
   const testPath = path.join(process.cwd(), 'lib', 'system');
-  expect(system.FileReader.getDirectoryContents(testPath)).toEqual(['cache', 'Cache.js', 'FileReader.js', 'FileWriter.js', 'index.js']);
+  expect(system.FileReader.getDirectoryContents(testPath).sort()).toEqual(['cache', 'Cache.js', 'FileReader.js', 'FileWriter.js', 'index.js'].sort());
 });
 
 test('Join returns the same as path.join for two strings', () => {

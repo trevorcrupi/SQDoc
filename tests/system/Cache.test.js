@@ -19,7 +19,7 @@ test('cache returns correct object when creating a file', () => {
 
 test('cache returns bad object when can\'t find a file', () => {
   const fullPath = path.join(process.cwd(), 'lib', 'system', 'cache', 'Test', 'test4.md.html');
-  expect(system.Cache('Test').cache([__dirname, 'TestFolder', 'test4.md'])).toEqual({ created: false });
+  expect(system.Cache('Test').cache([__dirname, 'TestFolder', 'test4.md']).created).toEqual(false);
 });
 
 test('cache actually creates an HTML file', () => {
@@ -27,13 +27,9 @@ test('cache actually creates an HTML file', () => {
   expect(fs.existsSync(fullPath)).toBe(true);
 });
 
-test('retrieveFullCachePath returns false when given bad file', () => {
-  expect(system.Cache('Test').retrieveFullCachePath('test3.md.html')).toBe(false);
-});
-
 test('retrieveFullCachePath gives correct full path to cache file', () => {
   const fullPath = path.join(process.cwd(), 'lib', 'system', 'cache', 'Test', 'test2.md.html');
-  expect(system.Cache('Test').retrieveFullCachePath('test2.md.html')).toBe(fullPath);
+  expect(system.Cache('Test').retrieveFullCachePath('test2.md')).toBe(fullPath);
 });
 
 test('remove correctly returns when given good file', () => {
