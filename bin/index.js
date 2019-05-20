@@ -79,7 +79,7 @@ program
     if(system.FileReader.exists(config.LOCK_PATH)) {
       try {  
         const server = controller.serve(args, config.GLOBALS.isCached).Server;
-        server.serve();
+        server.build().serve();
         console.log('Documentation server is up and running on port %s', colors.green(args.port));
       } catch(err) {
         throw new Error(err);
