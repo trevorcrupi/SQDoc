@@ -21,7 +21,9 @@ module.exports = () => {
       answers.projectNameTrim = answers.projectName.replace(/\s/g, "").trim();
       
       try {
-        system.Cache(answers.projectNameTrim).setup();
+        if(answers.isCached){
+          system.Cache(answers.projectNameTrim).setup();
+        }
 
         const payload = {
           path: config.LOCK_PATH,

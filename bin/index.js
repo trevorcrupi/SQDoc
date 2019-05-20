@@ -57,12 +57,6 @@ program
       const tree = controller.tree(config.ROOT_PATH);
       console.log('%s', tree.introduction);
       console.log('---------------');
-
-      if(!tree.complete) {
-        console.error('%s', tree.error || 'Something went wrong!');
-        throw new Error();
-      }
-
       console.log(tree.structure.toString());
     } else {
       console.log(colors.red('No doc.lock file yet.'));
@@ -83,11 +77,9 @@ program
   .option('-b, --build', 'Build Static Files', "")
   .action((args) => {
     if(system.FileReader.exists(config.LOCK_PATH)) {
-      const tree = controller.tree(config.ROOT_PATH);
-      try {
-        const server = new Server(tree.structure);
-        server.build(args.cache || config.GLOBALS['isCached'], args.build)
-              .serve(args.port);
+      try {  
+        const server = controller.serve(args, config.GLOBALS.isCached).Server;
+        server.serve();
         console.log('Documentation server is up and running on port %s', colors.green(args.port));
       } catch(err) {
         throw new Error(err);

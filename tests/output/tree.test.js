@@ -33,6 +33,51 @@ test('returns correct documentation tree', () => {
   expect(controller.tree(filepath).structure.getTree()).toStrictEqual(correctTree);
 });
 
+test('returns correct indexed tree', () => {
+  const filepath = path.join(__dirname, 'TestFolders');
+  const correctTree = {
+    'TestFolders': 0,
+    'FirstFolder': 1,
+    'GHI': 2,
+    'GHI.md': 3,
+    'FirstFolder.md': 4,
+    'SecondFolder': 5,
+    'SecondFolder.md': 6,
+    'root.md': 7
+  };
+  expect(controller.tree(filepath).structure.getIndexedTree()).toStrictEqual(correctTree);
+});
+
+test('returns correct index by name, exists', () => {
+  const filepath = path.join(__dirname, 'TestFolders');
+  const correctTree = {
+    'TestFolders': 0,
+    'FirstFolder': 1,
+    'GHI': 2,
+    'GHI.md': 3,
+    'FirstFolder.md': 4,
+    'SecondFolder': 5,
+    'SecondFolder.md': 6,
+    'root.md': 7
+  };
+  expect(controller.tree(filepath).structure.getTreeIndexByName('FirstFolder.md')).toBe(4);
+});
+
+test('returns correct index by name, nonexistent', () => {
+  const filepath = path.join(__dirname, 'TestFolders');
+  const correctTree = {
+    'TestFolders': 0,
+    'FirstFolder': 1,
+    'GHI': 2,
+    'GHI.md': 3,
+    'FirstFolder.md': 4,
+    'SecondFolder': 5,
+    'SecondFolder.md': 6,
+    'root.md': 7
+  };
+  expect(controller.tree(filepath).structure.getTreeIndexByName('asadghtdd.md')).toBe(undefined);
+});
+
 test('returns correct documentation tree node by name', () => {
   const filepath = path.join(__dirname, 'TestFolders');
   const correct = { level: 1, parent: 'TestFolders', type: 'directory', name: 'SecondFolder', fullpath: 'SecondFolder' };
