@@ -79,13 +79,14 @@ program
   .alias('p')
   .description('Starts the documentation server')
   .option('-p, --port [value]', 'Port', "3001")
+  .option('-c, --cache', 'Cache', "")
   .option('-b, --build', 'Build Static Files', "")
   .action((args) => {
     if(system.FileReader.exists(config.LOCK_PATH)) {
       const tree = controller.tree(config.ROOT_PATH);
       try {
         const server = new Server(tree.structure);
-        server.build(true, args.build)
+        server.build(args.cache || config.GLOBALS['isCached'], args.build)
               .serve(args.port);
         console.log('Documentation server is up and running on port %s', colors.green(args.port));
       } catch(err) {

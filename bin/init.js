@@ -8,8 +8,9 @@ module.exports = () => {
     { type: 'input', name: 'projectName', message: colors.green('Choose a Project Name') },
     { type: 'input', name: 'description', message: colors.green('A description of the project')},
     { type: 'input', name: 'companyName', message: colors.green('Company Name') },
+    { type: 'confirm', name: 'isCached', message: colors.green('Cache markdown files for faster loading?') },
   ];
-  
+
   inquirer
     .prompt(questions)
     .then((answers) => {
