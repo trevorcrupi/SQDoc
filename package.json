@@ -1,5 +1,5 @@
 {
-	"name": "SQDoc",
+	"name": "sqdoc",
 	"version": "0.0.1",
 	"preferGlobal": true,
 	"bin": {
@@ -14,6 +14,7 @@
 		"express-handlebars": "^3.1.0",
 		"inquirer": "^6.3.1",
 		"jest": "^24.8.0",
+		"make-dir": "^3.0.0",
 		"marked": "^0.6.2",
 		"rimraf": "^2.6.3"
 	},
