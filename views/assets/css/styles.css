@@ -57,6 +57,10 @@ a:focus {
   text-decoration: none;
 }
 
+a.file {
+  color: #B1BB1C;
+}
+
 h1 {
   font-family: 'Poppins', arial, sans-sans-serif;
 }
@@ -70,11 +74,11 @@ h3 {
 }
 
 code {
-  background: #222;
-  color: #fff;
+  background: #e8e8e8;
+  color: #242424;
   font-size: 14px;
   font-weight: bold;
-  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  font-family: Courier New, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   padding: 2px 8px;
   padding-top: 4px;
   display: inline-block;
