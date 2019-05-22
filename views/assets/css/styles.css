@@ -61,6 +61,10 @@ a.file {
   color: #B1BB1C;
 }
 
+img {
+  width: 100%;
+}
+
 h1 {
   font-family: 'Poppins', arial, sans-sans-serif;
 }
